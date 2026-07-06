@@ -14,7 +14,9 @@ import { Sections } from "./Sections";
  */
 export function Experience() {
   useEffect(() => {
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const reduce = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
 
     // --- reveal-on-scroll (opacity/transform only) -------------------------
     const revealTargets = Array.from(

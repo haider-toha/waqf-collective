@@ -22,8 +22,10 @@
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
   --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
 
-  /* Page inset (the outer margin the chrome and sections align to). */
-  --edge: clamp(1.25rem, 4.5vw, 4.5rem);
+  /* Page inset (the outer margin the chrome and sections align to).
+     max() folds in the notch inset so content never hugs a rounded/notched edge
+     (paired with viewport-fit=cover). Falls back to 0 on non-notched devices. */
+  --edge: max(env(safe-area-inset-left, 0px), clamp(1.25rem, 4.5vw, 4.5rem));
 
   /* Tracked-wide utility labels (Geist, never monospace). */
   --tracking-label: 0.24em;
@@ -92,6 +94,18 @@ p {
 
 a {
   color: inherit;
+}
+
+/* Touch polish — kill the grey tap flash and the 300ms double-tap delay so
+   controls feel native on phones. */
+a,
+button,
+.cta {
+  -webkit-tap-highlight-color: transparent;
+}
+button,
+.cta {
+  touch-action: manipulation;
 }
 
 /* Focus — visible, bronze, never removed. */
@@ -231,6 +245,12 @@ a {
 .verse--legacy .verse__arabic {
   font-size: clamp(1.9rem, 4.4vw, 3.4rem);
   color: var(--bronze);
+}
+/* The ayah is tight at its 1.9rem floor on the smallest phones — ease it down. */
+@media (max-width: 420px) {
+  .verse--legacy .verse__arabic {
+    font-size: 1.6rem;
+  }
 }
 .verse.is-drawn .verse__arabic {
   clip-path: inset(0 0 0 0);

@@ -5,12 +5,12 @@
    =========================================================================== */
 .section {
   position: relative;
-  min-height: 100vh;
+  min-height: 100svh;
   background: var(--charcoal);
   color: var(--bone);
   display: grid;
   grid-template-columns: minmax(0, 1fr) clamp(360px, 43vw, 600px);
-  grid-template-rows: minmax(100vh, auto);
+  grid-template-rows: minmax(100svh, auto);
 }
 
 /* --- Left: the text column ------------------------------------------------ */
@@ -96,19 +96,11 @@
 }
 .media::before {
   /* left → transparent */
-  background: linear-gradient(
-    to right,
-    var(--charcoal) 0%,
-    transparent 65%
-  );
+  background: linear-gradient(to right, var(--charcoal) 0%, transparent 65%);
 }
 .media::after {
   /* top → transparent */
-  background: linear-gradient(
-    to bottom,
-    var(--charcoal) 0%,
-    transparent 50%
-  );
+  background: linear-gradient(to bottom, var(--charcoal) 0%, transparent 50%);
 }
 
 /* ===========================================================================
@@ -124,6 +116,23 @@
   .media {
     grid-row: 1;
     height: clamp(300px, 52vh, 460px);
+  }
+
+  /* On mobile the arch sits above the text — dissolve its bottom edge into
+     the charcoal ground so the image meets the text without a hard seam.
+     The left fade is dropped (the image spans the full width) and the top
+     fade is preserved so the arch still eases into the section above. */
+  .media::before {
+    display: none;
+  }
+  .media::after {
+    background: linear-gradient(
+      to bottom,
+      var(--charcoal) 0%,
+      transparent 28%,
+      transparent 62%,
+      var(--charcoal) 100%
+    );
   }
 
   .textCol {

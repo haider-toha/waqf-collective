@@ -16,7 +16,7 @@ export function Close() {
       <div className={styles.footer}>
         <div className={styles.mountains} aria-hidden>
           <Image
-            src="/image-5.png"
+            src="/opt/image-5.webp"
             alt=""
             width={1088}
             height={608}
@@ -33,9 +33,9 @@ export function Close() {
             </p>
             <p className={styles.body} data-reveal>
               Collective Waqf revives this asset class for a new purpose. We
-              provide the structural, legal, and operational framework for modern
-              founders to pledge equity and make contributions, creating a
-              permanent engine for future innovation with taqwa.
+              provide the structural, legal, and operational framework for
+              modern founders to pledge equity and make contributions, creating
+              a permanent engine for future innovation with taqwa.
             </p>
           </div>
         </div>

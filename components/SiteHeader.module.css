@@ -37,99 +37,31 @@
   text-transform: uppercase;
 }
 
-
 .headerCta {
   flex: none;
 }
 
-/* --- hamburger (mobile) -------------------------------------------------- */
-.burger {
-  display: none;
-  position: relative;
-  width: 44px;
-  height: 44px;
-  background: none;
-  border: 0;
-  cursor: pointer;
-  color: inherit;
-}
-.burger span {
-  position: absolute;
-  left: 11px;
-  width: 22px;
-  height: 1.5px;
-  background: currentColor;
-  transition: transform 240ms var(--ease-out), opacity 160ms var(--ease-out);
-}
-.burger span:nth-child(1) {
-  top: 18px;
-}
-.burger span:nth-child(2) {
-  top: 25px;
-}
-.burger span[data-open="true"]:nth-child(1) {
-  transform: translateY(3.5px) rotate(45deg);
-}
-.burger span[data-open="true"]:nth-child(2) {
-  transform: translateY(-3.5px) rotate(-45deg);
-}
-
-/* --- full-screen menu ---------------------------------------------------- */
-.menu {
-  position: fixed;
-  inset: 0;
-  z-index: 45;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 2.5rem;
-  padding: var(--edge);
-  background: var(--cream);
-  color: var(--ink);
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(-8px);
-  transition:
-    opacity 260ms var(--ease-out),
-    transform 260ms var(--ease-out),
-    visibility 0s linear 260ms;
-}
-.menu[data-open="true"] {
-  opacity: 1;
-  visibility: visible;
-  transform: none;
-  transition:
-    opacity 260ms var(--ease-out),
-    transform 260ms var(--ease-out);
-}
-.menuNav {
-  display: flex;
-  flex-direction: column;
-  gap: 1.25rem;
-}
-.menuLink {
-  font-family: var(--font-display);
-  font-size: clamp(2rem, 9vw, 3rem);
-  line-height: 1.05;
-  text-decoration: none;
-  color: inherit;
-}
-.menuCta {
-  align-self: flex-start;
-  min-width: 15rem;
-}
-
 /* --- breakpoint ---------------------------------------------------------- */
 @media (max-width: 900px) {
+  /* Fixed so the pledge CTA stays reachable past the hero. A cream backdrop
+     fades in once scrolled off the hero, keeping the ink chrome legible over
+     the dark sections without cluttering the hero. */
+  .header {
+    position: fixed;
+    padding-top: max(env(safe-area-inset-top), clamp(1.15rem, 2.4vw, 1.9rem));
+    transition:
+      background 240ms var(--ease-out),
+      backdrop-filter 240ms var(--ease-out);
+  }
+  .header[data-scrolled="true"] {
+    background: color-mix(in oklab, var(--cream) 90%, transparent);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+  }
+  /* Tighten the pledge CTA on small screens so the wordmark doesn't get squeezed. */
   .headerCta {
-    display: none;
-  }
-  .burger {
-    display: block;
-  }
-}
-@media (min-width: 901px) {
-  .menu {
-    display: none;
+    gap: 0.9rem;
+    padding: 0.6rem 1rem;
+    font-size: 0.8rem;
   }
 }

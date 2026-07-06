@@ -27,10 +27,12 @@
   width: min(70vw, 980px);
   z-index: 0;
   pointer-events: none;
-  -webkit-mask-image: linear-gradient(to right, transparent 18%, #000 65%),
+  -webkit-mask-image:
+    linear-gradient(to right, transparent 18%, #000 65%),
     linear-gradient(to bottom, transparent 0%, transparent 42%, #000 85%);
   -webkit-mask-composite: source-in;
-  mask-image: linear-gradient(to right, transparent 18%, #000 65%),
+  mask-image:
+    linear-gradient(to right, transparent 18%, #000 65%),
     linear-gradient(to bottom, transparent 0%, transparent 42%, #000 85%);
   mask-composite: intersect;
 }
@@ -80,7 +82,11 @@
    --------------------------------------------------------------------------- */
 @media (max-width: 720px) {
   .footerContent {
-    padding-block: clamp(3rem, 14vw, 4.5rem);
+    /* Reserve room beneath the stacked text so it clears the mountains
+       anchored to the footer's bottom edge. Mountain height ≈ width / 1.79,
+       and at 110% viewport width that's ~61vw; we pad just past that. */
+    padding-top: clamp(3rem, 14vw, 4.5rem);
+    padding-bottom: clamp(9rem, 62vw, 16rem);
   }
   .grid {
     grid-template-columns: minmax(0, 1fr);
@@ -99,7 +105,7 @@
   }
   .mountains {
     right: 0;
-    width: 118%;
+    width: 110%;
     opacity: 0.6;
     -webkit-mask-image: linear-gradient(to bottom, transparent, #000 22%);
     -webkit-mask-composite: source-over;

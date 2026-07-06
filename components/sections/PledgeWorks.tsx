@@ -44,12 +44,9 @@ export function PledgeWorks() {
     const el = ref.current;
     if (!el) return;
 
-    // Reduced motion: reveal immediately, skip the wipe/cascade entirely.
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      setShown(true);
-      return;
-    }
-
+    // Reveal when the band scrolls into view. Under reduced motion the CSS swaps
+    // the wipe/cascade for a plain fade, so this single trigger serves both — and
+    // it keeps setState in a callback, never synchronously in the effect body.
     const io = new IntersectionObserver(
       (entries) => {
         if (entries[0]?.isIntersecting) {
@@ -79,7 +76,7 @@ export function PledgeWorks() {
         <div className={styles.inner}>
           <div className={styles.figure}>
             <Image
-              src="/image-2.png"
+              src="/opt/image-2.webp"
               alt=""
               width={1088}
               height={608}
@@ -90,7 +87,14 @@ export function PledgeWorks() {
           <ol className={styles.labels}>
             {STAGES.map((s) => (
               <li key={s.title} className={styles.col}>
-                <h3 className={styles.colTitle} style={s.title.includes("\n") ? { whiteSpace: "pre-line" } : undefined}>
+                <h3
+                  className={styles.colTitle}
+                  style={
+                    s.title.includes("\n")
+                      ? { whiteSpace: "pre-line" }
+                      : undefined
+                  }
+                >
                   {s.title}
                 </h3>
                 {s.body && <p className={styles.colBody}>{s.body}</p>}

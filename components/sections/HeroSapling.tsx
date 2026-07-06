@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useEffect, useRef } from "react";
 import styles from "./Hero.module.css";
 
-const SRC = "/image-1-pixelated-v3.png";
+const SRC = "/opt/image-1.webp";
 const CREAM = "#ede1cf"; // the hero ground; the field the tiles rest on
 
 /**
@@ -23,8 +23,12 @@ export function HeroSapling() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
-    const fine = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const fine = window.matchMedia(
+      "(hover: hover) and (pointer: fine)",
+    ).matches;
+    const reduce = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
     if (!fine || reduce) return;
 
     const canvas = canvasRef.current;
@@ -40,16 +44,24 @@ export function HeroSapling() {
     const SPRING = 0.08;
 
     type Tile = {
-      hx: number; hy: number; // home
-      x: number; y: number; vx: number; vy: number;
+      hx: number;
+      hy: number; // home
+      x: number;
+      y: number;
+      vx: number;
+      vy: number;
       color: string;
     };
     let tiles: Tile[] = [];
     let active: Int32Array = new Int32Array(0); // scratch: indices disturbed this frame
     let base: HTMLCanvasElement | null = null;
-    let cssW = 0, cssH = 0;
-    let cellW = 10, cellH = 10, size = 8;
-    let radius = 130, push = 6;
+    let cssW = 0,
+      cssH = 0;
+    let cellW = 10,
+      cellH = 10,
+      size = 8;
+    let radius = 130,
+      push = 6;
     let ready = false;
     let painted = false;
     const mouse = { x: -9999, y: -9999 };
@@ -102,16 +114,29 @@ export function HeroSapling() {
 
       // field colour = top-left corner; tiles matching it are dropped so only
       // the sapling is made of pixels and the gaps read as cream
-      const fr = data[0], fg = data[1], fb = data[2];
+      const fr = data[0],
+        fg = data[1],
+        fb = data[2];
       const next: Tile[] = [];
       for (let j = 0; j < rows; j++) {
         for (let i = 0; i < cols; i++) {
           const k = (j * cols + i) * 4;
-          const r = data[k], g = data[k + 1], b = data[k + 2];
-          if (Math.abs(r - fr) + Math.abs(g - fg) + Math.abs(b - fb) < 26) continue;
+          const r = data[k],
+            g = data[k + 1],
+            b = data[k + 2];
+          if (Math.abs(r - fr) + Math.abs(g - fg) + Math.abs(b - fb) < 26)
+            continue;
           const hx = (i + 0.5) * cellW;
           const hy = (j + 0.5) * cellH;
-          next.push({ hx, hy, x: hx, y: hy, vx: 0, vy: 0, color: `rgb(${r},${g},${b})` });
+          next.push({
+            hx,
+            hy,
+            x: hx,
+            y: hy,
+            vx: 0,
+            vy: 0,
+            color: `rgb(${r},${g},${b})`,
+          });
         }
       }
       tiles = next;
@@ -168,9 +193,14 @@ export function HeroSapling() {
         p.x += p.vx + (p.hx - p.x) * SPRING;
         p.y += p.vy + (p.hy - p.y) * SPRING;
         const off =
-          p.x - p.hx > 0.4 || p.hx - p.x > 0.4 ||
-          p.y - p.hy > 0.4 || p.hy - p.y > 0.4 ||
-          p.vx > 0.05 || p.vx < -0.05 || p.vy > 0.05 || p.vy < -0.05;
+          p.x - p.hx > 0.4 ||
+          p.hx - p.x > 0.4 ||
+          p.y - p.hy > 0.4 ||
+          p.hy - p.y > 0.4 ||
+          p.vx > 0.05 ||
+          p.vx < -0.05 ||
+          p.vy > 0.05 ||
+          p.vy < -0.05;
         if (off) {
           active[count++] = n;
           ctx.fillRect(p.hx - cellW / 2, p.hy - cellH / 2, cellW, cellH);
@@ -226,7 +256,14 @@ export function HeroSapling() {
   return (
     <div ref={wrapRef} className={styles.imgWrap}>
       {/* flat mosaic — the LCP, and the fallback for touch / reduced-motion */}
-      <Image src={SRC} alt="" fill preload sizes="100vw" className={styles.img} />
+      <Image
+        src={SRC}
+        alt=""
+        fill
+        preload
+        sizes="100vw"
+        className={styles.img}
+      />
       {/* interactive pixel grid, drawn over the mosaic once sampled */}
       <canvas ref={canvasRef} className={styles.canvas} aria-hidden />
     </div>

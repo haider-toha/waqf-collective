@@ -2,6 +2,7 @@
 
 # dependencies
 /node_modules
+/.pnpm-store
 /.pnp
 .pnp.*
 .yarn/*
@@ -15,7 +16,6 @@
 
 # next.js
 /.next/
-/.open-next/
 /out/
 
 # production
@@ -39,9 +39,6 @@ yarn-error.log*
 
 # vercel
 .vercel
-
-# cloudflare
-.wrangler/
 
 # typescript
 *.tsbuildinfo

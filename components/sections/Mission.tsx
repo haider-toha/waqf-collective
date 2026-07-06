@@ -54,7 +54,7 @@ export function Mission() {
 
       <div className={styles.media}>
         <Image
-          src="/image-4.png"
+          src="/opt/image-4.webp"
           alt=""
           fill
           sizes="(max-width:900px) 100vw, 45vw"

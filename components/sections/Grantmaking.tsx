@@ -2,10 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import {
-  VERSE_ARABIC,
-  VERSE_TRANSLATION,
-} from "@/lib/verse";
+import { VERSE_ARABIC, VERSE_TRANSLATION } from "@/lib/verse";
 import styles from "./Grantmaking.module.css";
 
 /**
@@ -70,7 +67,7 @@ export function Grantmaking() {
         <div className={styles.plot}>
           <Image
             className={styles.image}
-            src="/image-3.png"
+            src="/opt/image-3.webp"
             alt=""
             width={1088}
             height={608}

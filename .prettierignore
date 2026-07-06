@@ -1,0 +1,18 @@
+# Build output & deps
+.next/
+out/
+build/
+node_modules/
+
+# Generated / lockfiles
+pnpm-lock.yaml
+package-lock.json
+next-env.d.ts
+*.tsbuildinfo
+
+# Binary assets
+public/
+
+# Vendored / tool files (not project source)
+.agents/
+.cursor/

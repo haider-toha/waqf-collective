@@ -5,7 +5,7 @@
    =========================================================================== */
 .section {
   position: relative;
-  min-height: 100vh;
+  min-height: 100svh;
   background: var(--charcoal);
   color: var(--bone);
   padding-block: 12vh;
@@ -120,29 +120,43 @@
 }
 
 /* ===========================================================================
-   Mobile — the sequence becomes one horizontal-scroll strip.
-   Image + the four labels share a track wider than the viewport.
+   Mobile — a cue-less horizontal scroller hid stages 2–5 (and failed WCAG
+   reflow). Instead the sequence stacks vertically: the growth line reads
+   full-width up top, then the four stages fall into a single readable column.
    =========================================================================== */
 @media (max-width: 768px) {
-  .sequence {
-    overflow-x: auto;
-    overflow-y: visible;
-    -webkit-overflow-scrolling: touch;
-    overscroll-behavior-x: contain;
-    scrollbar-width: none;
-    /* bleed the strip to the section edge so it reads as scrollable */
-    margin-inline: calc(-1 * var(--edge));
-    padding-inline: var(--edge);
+  .section {
+    min-height: auto; /* no viewport-height void on phones */
   }
-  .sequence::-webkit-scrollbar {
-    display: none;
+  .sequence {
+    overflow: visible;
+    margin-inline: 0;
+    padding-inline: 0;
   }
   .inner {
-    min-width: 820px;
+    min-width: 0;
+  }
+  .figure {
+    max-width: 26rem;
+    margin-inline: auto;
+  }
+  .figureImg {
+    /* labels no longer overlap the vine, so show the full growth line */
+    -webkit-mask-image: none;
+    mask-image: none;
   }
   .labels {
-    /* image is ~820px wide here → ~458px tall; pull up ~42% to meet the vine */
-    margin-top: -188px;
+    margin: clamp(1.75rem, 6vw, 2.75rem) 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: clamp(1.5rem, 5vw, 2.25rem);
+  }
+  .col {
+    max-width: 40ch;
+  }
+  .col:nth-child(5) {
+    justify-self: start;
+    text-align: left;
   }
 }
 
