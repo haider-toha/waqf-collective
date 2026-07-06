@@ -15,21 +15,24 @@ const CREAM = "#ede1cf"; // the hero ground; the field the tiles rest on
  * The resting grid is rendered once to an offscreen buffer and blitted each
  * frame; only tiles actually displaced near the pointer are erased and redrawn,
  * so the field can be fine (tens of thousands of tiles) and still hold 60fps.
- * The <Image> stays as the LCP and the fallback for touch and reduced-motion,
- * where the grid never starts and the flat mosaic shows instead.
+ * The <Image> stays as the LCP and the fallback for reduced-motion, where the
+ * grid never starts and the flat mosaic shows instead. On touch, the same
+ * scatter runs and follows the finger — the canvas is pointer-events: none so
+ * scrolling stays native underneath.
  */
 export function HeroSapling() {
   const wrapRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
-    const fine = window.matchMedia(
-      "(hover: hover) and (pointer: fine)",
-    ).matches;
     const reduce = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
     ).matches;
-    if (!fine || reduce) return;
+    // We used to gate this to fine pointers only, so phones got a static image
+    // and no interaction. `pointermove` fires for touch too, and the canvas is
+    // pointer-events: none, so a finger drag now scatters pixels along its
+    // path while the page still scrolls normally underneath.
+    if (reduce) return;
 
     const canvas = canvasRef.current;
     const wrap = wrapRef.current;
@@ -238,6 +241,8 @@ export function HeroSapling() {
     img.src = SRC;
 
     window.addEventListener("pointermove", onMove, { passive: true });
+    window.addEventListener("pointerup", onLeave, { passive: true });
+    window.addEventListener("pointercancel", onLeave, { passive: true });
     document.addEventListener("mouseleave", onLeave);
     window.addEventListener("blur", onLeave);
     window.addEventListener("resize", onResize);
@@ -246,6 +251,8 @@ export function HeroSapling() {
     return () => {
       cancelAnimationFrame(raf);
       window.removeEventListener("pointermove", onMove);
+      window.removeEventListener("pointerup", onLeave);
+      window.removeEventListener("pointercancel", onLeave);
       document.removeEventListener("mouseleave", onLeave);
       window.removeEventListener("blur", onLeave);
       window.removeEventListener("resize", onResize);

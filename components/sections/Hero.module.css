@@ -8,7 +8,7 @@
   position: relative;
   min-height: 100svh;
   overflow: hidden;
-  background: #ede1cf;
+  background: var(--cream);
   color: var(--ink);
   padding-inline: var(--edge);
 }
@@ -22,9 +22,15 @@
   pointer-events: none;
   animation: imgIn 300ms var(--ease-out) both;
 }
+/* The source is a hard-edged pixel mosaic; use nearest-neighbor when the
+   browser scales it so the pixels stay crisp on any viewport instead of
+   being smoothed into a fuzzy blur (matters most on phones where the
+   canvas overlay never boots). `crisp-edges` is the Safari fallback. */
 .img {
   object-fit: cover;
   object-position: center 35%;
+  image-rendering: crisp-edges;
+  image-rendering: pixelated;
 }
 
 /* Interactive pixel grid. Painted from the mosaic by HeroSapling and faded in
@@ -40,6 +46,8 @@
   pointer-events: none;
   opacity: 0;
   transition: opacity 500ms var(--ease-out);
+  image-rendering: crisp-edges;
+  image-rendering: pixelated;
 }
 
 @keyframes imgIn {
