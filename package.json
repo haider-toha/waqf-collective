@@ -4,9 +4,11 @@
   "private": true,
   "scripts": {
     "dev": "next dev -p 4327",
-    "build": "next build",
-    "postbuild": "cp -r public .next/standalone/ && cp -r .next/static .next/standalone/.next/",
-    "start": "node .next/standalone/server.js",
+    "build": "opennextjs-cloudflare build",
+    "next:build": "next build",
+    "cf:deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
+    "cf:preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
+    "start": "next start",
     "lint": "eslint"
   },
   "dependencies": {
@@ -24,6 +26,7 @@
     "three": "^0.185.1"
   },
   "devDependencies": {
+    "@opennextjs/cloudflare": "^1.20.1",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
@@ -31,6 +34,7 @@
     "eslint": "^9",
     "eslint-config-next": "16.2.10",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "typescript": "^5",
+    "wrangler": "^4.107.0"
   }
 }
