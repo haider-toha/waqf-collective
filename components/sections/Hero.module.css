@@ -1,0 +1,125 @@
+/* ===========================================================================
+   Hero — cream ground, full viewport. A stipple sapling bleeds off the
+   bottom-right; the headline + pledge sit left.
+   Desktop is absolutely composed; ≤900px collapses to a single column with
+   the sapling below the text block.
+   =========================================================================== */
+.hero {
+  position: relative;
+  min-height: 100svh;
+  overflow: hidden;
+  background: #ede1cf;
+  color: var(--ink);
+  padding-inline: var(--edge);
+}
+
+.imgWrap {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  animation: imgIn 300ms var(--ease-out) both;
+}
+.img {
+  object-fit: cover;
+  object-position: center 35%;
+}
+
+/* Interactive pixel grid. Painted from the mosaic by HeroSapling and faded in
+   over it once the first frame lands (opacity flipped to 1 in JS). Sits above
+   the <Image> in the same wrap; never eats pointer events, so the CTA stays
+   clickable. Only ever drawn for fine pointers without reduced-motion. */
+.canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 500ms var(--ease-out);
+}
+
+@keyframes imgIn {
+  from {
+    opacity: 0;
+    transform: scale(1.02);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes imgFade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* --- left content column: headline, body, pledge -------------------------- */
+.content {
+  position: absolute;
+  top: 27%;
+  left: var(--edge);
+  z-index: 3;
+}
+.headline {
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-size: clamp(2.8rem, 6vw, 5.5rem);
+  line-height: 1;
+  letter-spacing: -0.01em;
+  text-wrap: wrap;
+  max-width: 13ch;
+}
+.body {
+  margin-top: 1.7rem;
+  max-width: 34ch;
+  color: var(--ink-dim);
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  line-height: 1.55;
+}
+.ctaRow {
+  margin-top: 2.1rem;
+}
+
+/* ===========================================================================
+   Reduced motion — keep the fade, drop movement.
+   =========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  .imgWrap {
+    animation: imgFade 300ms ease both;
+  }
+}
+
+/* ===========================================================================
+   ≤900px — single column: headline, body, pledge, then the sapling below.
+   =========================================================================== */
+@media (max-width: 900px) {
+  .content {
+    position: static;
+    padding-top: 6rem; /* clear the global nav */
+    max-width: none;
+  }
+  .headline {
+    font-size: clamp(2.55rem, 10vw, 3.5rem);
+  }
+  .body {
+    max-width: 42ch;
+  }
+
+  .imgWrap {
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+  .img {
+    object-position: center 40%;
+  }
+}

@@ -1,0 +1,82 @@
+/* ===========================================================================
+   Colophon — the manuscript's last line. Charcoal ground. The wordmark set
+   huge in Geist, centred, bronze — doubles as the return-to-top link (hover
+   warms it to cream). A single tiny meta line below. Nothing else.
+   =========================================================================== */
+.colophon {
+  position: relative;
+  background: var(--charcoal);
+  color: var(--bone);
+  padding-block: clamp(3.5rem, 9vw, 7rem) clamp(2.25rem, 5vw, 3.5rem);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(1.5rem, 3vw, 2.25rem);
+  text-align: center;
+  overflow: clip;
+}
+
+/* --- the wordmark, which is also the return-to-top link ------------------- */
+.wordmark {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: clamp(2.75rem, 11vw, 8.5rem);
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: var(--bronze);
+  text-decoration: none;
+  text-wrap: balance;
+  transition:
+    color 280ms var(--ease-out),
+    letter-spacing 280ms var(--ease-out);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .wordmark:hover {
+    color: var(--bone);
+    letter-spacing: -0.04em;
+  }
+}
+
+/* --- the single meta line, tiny tracked caps ------------------------------ */
+.meta {
+  margin: 0;
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  font-family: var(--font-sans);
+  font-weight: 200;
+  font-size: 0.68rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: color-mix(in oklab, var(--bone) 50%, transparent);
+}
+
+.dot {
+  color: color-mix(in oklab, var(--bronze) 70%, transparent);
+  font-size: 0.7rem;
+  letter-spacing: 0;
+}
+
+/* ===========================================================================
+   Narrow (≤720px) — meta line wraps, wordmark shrinks with the viewport.
+   =========================================================================== */
+@media (max-width: 720px) {
+  .meta {
+    font-size: 0.58rem;
+    gap: 0.4rem 0.5rem;
+  }
+}
+
+/* ===========================================================================
+   Reduced motion — drop the letter-spacing shift, keep the colour change.
+   =========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  .wordmark {
+    transition: color 200ms ease;
+  }
+}

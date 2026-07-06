@@ -1,0 +1,109 @@
+/* ===========================================================================
+   Close — cream footer
+   =========================================================================== */
+.section {
+  position: relative;
+}
+
+/* ---------------------------------------------------------------------------
+   Cream footer — full-bleed ground; the mountains are anchored to the true right/bottom edge
+   and clipped by the footer, so they run off-screen with no horizontal scroll.
+   --------------------------------------------------------------------------- */
+.footer {
+  position: relative;
+  overflow: clip;
+  background: var(--cream);
+  color: var(--ink);
+}
+
+/* image-5 — ink-wash mountains + golden sun. Its paper is a warmer cream than
+   --cream, so the top/left edges are feathered with a mask to melt the seam
+   into the ground; the right/bottom simply bleed off the viewport. Tuned so the
+   heavy mountains meet the right edge and the sun lands upper-right. */
+.mountains {
+  position: absolute;
+  right: -5vw;
+  bottom: 0;
+  width: min(70vw, 980px);
+  z-index: 0;
+  pointer-events: none;
+  -webkit-mask-image: linear-gradient(to right, transparent 18%, #000 65%),
+    linear-gradient(to bottom, transparent 0%, transparent 42%, #000 85%);
+  -webkit-mask-composite: source-in;
+  mask-image: linear-gradient(to right, transparent 18%, #000 65%),
+    linear-gradient(to bottom, transparent 0%, transparent 42%, #000 85%);
+  mask-composite: intersect;
+}
+.mountainImg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.footerContent {
+  position: relative;
+  z-index: 1;
+  padding-inline: var(--edge);
+  padding-block: clamp(3rem, 7vw, 5.5rem);
+}
+
+/* Two text columns (serif lede + body) sat left-of-centre against the
+   mountains. Near-equal widths per close-footer.png. */
+.grid {
+  display: grid;
+  grid-template-columns: minmax(0, 25ch) minmax(0, 30ch);
+  column-gap: clamp(2rem, 5vw, 5rem);
+  row-gap: clamp(2.25rem, 4.5vw, 3.5rem);
+  align-items: center;
+  justify-content: start;
+}
+
+.lede {
+  grid-area: 1 / 1;
+  font-family: var(--font-display);
+  color: var(--ink);
+  font-size: clamp(1.15rem, 1.5vw, 1.3rem);
+  line-height: 1.32;
+  letter-spacing: -0.005em;
+}
+
+.body {
+  grid-area: 1 / 2;
+  font-family: var(--font-sans);
+  color: var(--ink-dim);
+  font-size: 0.95rem;
+  line-height: 1.58;
+}
+
+/* ---------------------------------------------------------------------------
+   Mobile (≤720px) — columns stack, mountains sit full-width & subtle below.
+   --------------------------------------------------------------------------- */
+@media (max-width: 720px) {
+  .footerContent {
+    padding-block: clamp(3rem, 14vw, 4.5rem);
+  }
+  .grid {
+    grid-template-columns: minmax(0, 1fr);
+    column-gap: 0;
+    row-gap: 1.5rem;
+    align-items: start;
+  }
+  .lede {
+    grid-area: auto;
+    font-size: 1.2rem;
+    max-width: 26ch;
+  }
+  .body {
+    grid-area: auto;
+    max-width: 40ch;
+  }
+  .mountains {
+    right: 0;
+    width: 118%;
+    opacity: 0.6;
+    -webkit-mask-image: linear-gradient(to bottom, transparent, #000 22%);
+    -webkit-mask-composite: source-over;
+    mask-image: linear-gradient(to bottom, transparent, #000 22%);
+    mask-composite: add;
+  }
+}

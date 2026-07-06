@@ -1,0 +1,145 @@
+/* ===========================================================================
+   Mission — charcoal, two columns: text (left) / full-bleed arch (right).
+   The single row is at least the viewport tall, so the media stretches and the
+   arch bleeds to the section's top, bottom and right edges.
+   =========================================================================== */
+.section {
+  position: relative;
+  min-height: 100vh;
+  background: var(--charcoal);
+  color: var(--bone);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) clamp(360px, 43vw, 600px);
+  grid-template-rows: minmax(100vh, auto);
+}
+
+/* --- Left: the text column ------------------------------------------------ */
+.textCol {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between; /* quote (top) · CTA (mid) · figures (foot) */
+  gap: clamp(2rem, 4vh, 3rem);
+  padding: clamp(3.5rem, 8vh, 6rem) clamp(2rem, 4vw, 4.5rem)
+    clamp(3rem, 7vh, 5rem) var(--edge);
+}
+
+.quote {
+  margin: 0;
+  max-width: 19ch;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(1.8rem, 3vw, 2.6rem);
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  text-wrap: wrap; /* greedy breaks, ragged right — as in the reference */
+  color: var(--bone);
+}
+
+/* Trust line + figures — the foot cluster (spread by the column above). */
+.foot {
+  align-self: stretch;
+}
+
+.tagline {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: clamp(0.9rem, 1vw, 1rem);
+  line-height: 1.5;
+  color: var(--bone-dim);
+}
+
+.stats {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1.5rem 2rem;
+  max-width: 34rem;
+  margin-top: clamp(1.75rem, 3.5vh, 2.75rem);
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+/* PP Editorial New numerals — large, tight, emphatically not monospace. */
+.figure {
+  display: block;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(2.2rem, 4vw, 3.4rem);
+  line-height: 1;
+  letter-spacing: -0.01em;
+  color: var(--bone);
+}
+
+/* .label leans on the global .u-label for the tracked Geist caps. */
+
+/* --- Right: the full-bleed arch ------------------------------------------- */
+.media {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Gradients that dissolve the arch into the charcoal background —
+   left edge fades across ~45% of the column, top edge fades ~30%. */
+.media::before,
+.media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+.media::before {
+  /* left → transparent */
+  background: linear-gradient(
+    to right,
+    var(--charcoal) 0%,
+    transparent 65%
+  );
+}
+.media::after {
+  /* top → transparent */
+  background: linear-gradient(
+    to bottom,
+    var(--charcoal) 0%,
+    transparent 50%
+  );
+}
+
+/* ===========================================================================
+   Mobile — single column: arch on top, then text below in reading order.
+   =========================================================================== */
+@media (max-width: 900px) {
+  .section {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto;
+    min-height: auto;
+  }
+
+  .media {
+    grid-row: 1;
+    height: clamp(300px, 52vh, 460px);
+  }
+
+  .textCol {
+    grid-row: 2;
+    gap: clamp(2.25rem, 5.5vh, 3.25rem);
+    padding: clamp(2.25rem, 7vh, 3.25rem) var(--edge);
+  }
+
+  .quote {
+    max-width: 32ch;
+    font-size: clamp(1.6rem, 6.2vw, 2.15rem);
+  }
+
+  .stats {
+    justify-content: flex-start;
+    max-width: none;
+    gap: clamp(1.25rem, 5vw, 2rem);
+  }
+}

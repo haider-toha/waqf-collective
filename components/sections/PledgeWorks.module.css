@@ -1,0 +1,167 @@
+/* ===========================================================================
+   How the pledge works — charcoal ground, bone text.
+   Full-width golden growth line (image-2); four labels aligned under the first
+   four stages; the fifth (the grown tree) is visual only.
+   =========================================================================== */
+.section {
+  position: relative;
+  min-height: 100vh;
+  background: var(--charcoal);
+  color: var(--bone);
+  padding-block: 12vh;
+  padding-inline: var(--edge);
+  display: flex;
+  flex-direction: column;
+}
+
+/* --- intro ---------------------------------------------------------------- */
+.head {
+  position: relative;
+  z-index: 2;
+}
+.title {
+  margin: 0;
+  font-family: var(--font-display);
+  color: var(--bone);
+  font-size: clamp(2rem, 3.4vw, 3rem);
+  line-height: 1.02;
+  letter-spacing: -0.012em;
+}
+
+/* --- the endowment line --------------------------------------------------- */
+.sequence {
+  margin-top: clamp(2rem, 5vh, 4rem);
+}
+.inner {
+  position: relative;
+  width: 100%;
+}
+.figure {
+  width: 100%;
+  mix-blend-mode: lighten;
+}
+.figureImg {
+  display: block;
+  width: 100%;
+  height: auto;
+  /* Mask-wipe: hidden from the right, revealed left→right on scroll-in. */
+  clip-path: inset(0 100% 0 0);
+  transition: clip-path 900ms var(--ease-out);
+  will-change: clip-path;
+  /* Fade the bottom of the growth line into charcoal so labels sit cleanly. */
+  -webkit-mask-image: linear-gradient(to bottom, #000 35%, transparent 58%);
+  mask-image: linear-gradient(to bottom, #000 35%, transparent 58%);
+}
+.section[data-shown="true"] .figureImg {
+  clip-path: inset(0 0 0 0);
+}
+
+/* Four columns pulled up under the vine, aligned beneath stages 1–4.
+   Column pitch (~16.3%) tracks the stage spacing measured in image-2; the
+   fifth track (1fr) is the empty gutter beneath the grown tree. */
+.labels {
+  position: relative;
+  z-index: 2;
+  list-style: none;
+  margin: calc(-0.215 * (100vw - 2 * var(--edge))) 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 16.3%)) minmax(0, 1fr);
+  align-items: start;
+  column-gap: 0;
+}
+.col {
+  max-width: 22ch;
+  /* cascade in behind the wipe (left→right via staggered delay) */
+  opacity: 0;
+  transform: translateY(14px);
+  transition:
+    opacity 700ms var(--ease-out),
+    transform 700ms var(--ease-out);
+  will-change: opacity, transform;
+}
+.col:nth-child(1) {
+  transition-delay: 0ms;
+}
+.col:nth-child(2) {
+  transition-delay: 80ms;
+}
+.col:nth-child(3) {
+  transition-delay: 160ms;
+}
+.col:nth-child(4) {
+  transition-delay: 240ms;
+}
+.col:nth-child(5) {
+  transition-delay: 320ms;
+  justify-self: center;
+  text-align: center;
+}
+.section[data-shown="true"] .col {
+  opacity: 1;
+  transform: none;
+}
+.colTitle {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 400;
+  color: var(--bone);
+  font-size: 1.15rem;
+  line-height: 1.12;
+  letter-spacing: -0.01em;
+}
+.colBody {
+  margin: 0.7rem 0 0;
+  max-width: 22ch;
+  font-family: var(--font-sans);
+  color: var(--bone-dim);
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+
+/* ===========================================================================
+   Mobile — the sequence becomes one horizontal-scroll strip.
+   Image + the four labels share a track wider than the viewport.
+   =========================================================================== */
+@media (max-width: 768px) {
+  .sequence {
+    overflow-x: auto;
+    overflow-y: visible;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+    /* bleed the strip to the section edge so it reads as scrollable */
+    margin-inline: calc(-1 * var(--edge));
+    padding-inline: var(--edge);
+  }
+  .sequence::-webkit-scrollbar {
+    display: none;
+  }
+  .inner {
+    min-width: 820px;
+  }
+  .labels {
+    /* image is ~820px wide here → ~458px tall; pull up ~42% to meet the vine */
+    margin-top: -188px;
+  }
+}
+
+/* ===========================================================================
+   Reduced motion — fade only; no wipe, no movement.
+   =========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  .figureImg {
+    clip-path: none;
+    opacity: 0;
+    transition: opacity 350ms ease;
+    will-change: opacity;
+  }
+  .section[data-shown="true"] .figureImg {
+    opacity: 1;
+  }
+  .col {
+    transform: none;
+    transition: opacity 350ms ease;
+    transition-delay: 0ms !important;
+  }
+}
