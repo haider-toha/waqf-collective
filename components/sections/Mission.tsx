@@ -5,7 +5,7 @@ import styles from "./Mission.module.css";
 /** The three closing figures — display serif numerals, never monospace. */
 const STATS = [
   { figure: "∞", label: "Generations" },
-  { figure: "100%", label: "Mission aligned" },
+  { figure: "1000%", label: "Mission aligned" },
   { figure: "1%", label: "Your pledge" },
 ];
 
