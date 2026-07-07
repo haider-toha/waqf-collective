@@ -28,7 +28,7 @@
    canvas overlay never boots). `crisp-edges` is the Safari fallback. */
 .img {
   object-fit: cover;
-  object-position: center 35%;
+  object-position: center 50%;
   image-rendering: crisp-edges;
   image-rendering: pixelated;
 }
@@ -97,6 +97,33 @@
   margin-top: 2.1rem;
 }
 
+/* Qur'an 2:110 — tucked into the open cream beside the sapling's crown on
+   the right. The Arabic wipes in R→L on load; the gloss fades in after.
+   Right-anchored so it floats independently of the left headline block. */
+.heroVerse {
+  position: absolute;
+  top: 27%;
+  right: var(--edge);
+  z-index: 3;
+  max-width: 30ch;
+  text-align: right;
+}
+.heroVerse :global(.verse__arabic) {
+  margin: 0;
+}
+.heroVerse :global(.verse__gloss) {
+  margin-top: 0.55rem;
+}
+.heroVerse :global(.verse__translation) {
+  margin: 0;
+  font-size: 0.85rem;
+  line-height: 1.4;
+  text-align: right;
+}
+.heroVerse :global(.verse__meta) {
+  margin: 0.3rem 0 0;
+}
+
 /* ===========================================================================
    Reduced motion — keep the fade, drop movement.
    =========================================================================== */
@@ -118,13 +145,27 @@
     flex-direction: column;
     min-height: 100svh;
   }
+  /* Verse moves into flex flow above the headline. It carries the nav-clearance
+     padding so .content no longer needs to. */
+  .heroVerse {
+    position: relative;
+    top: auto;
+    right: auto;
+    order: 0;
+    max-width: none;
+    text-align: left;
+    padding-top: 6rem; /* clear the fixed nav */
+    margin-bottom: clamp(0.75rem, 2vh, 1.25rem);
+  }
+  .heroVerse :global(.verse__translation) {
+    text-align: left;
+  }
   .content {
     position: relative; /* so z-index actually applies — was static (bug) */
     z-index: 3;
-    order: 0;
+    order: 1;
     top: auto;
     left: auto;
-    padding-top: 6rem; /* clear the global nav */
     max-width: none;
   }
   .headline {
@@ -138,7 +179,7 @@
   /* Sapling drops into flow beneath the text and bleeds edge-to-edge, filling
      whatever vertical space is left so the hero still fills the first screen. */
   .imgWrap {
-    order: 1;
+    order: 2;
     position: relative;
     inset: auto;
     flex: 1 1 auto;

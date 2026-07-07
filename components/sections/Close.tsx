@@ -28,12 +28,10 @@ export function Close() {
         <div className={styles.footerContent}>
           <div className={styles.grid}>
             <p className={styles.lede} data-reveal>
-              Historically, waqfs were funded with land and real estate. Today,
-              the most significant wealth is created in the technology sector.
+              Collective Waqf revives this asset class for a new purpose.
             </p>
             <p className={styles.body} data-reveal>
-              Collective Waqf revives this asset class for a new purpose. We
-              provide the structural, legal, and operational framework for
+              We provide the structural, legal, and operational framework for
               modern founders to pledge equity and make contributions, creating
               a permanent engine for future innovation with taqwa.
             </p>

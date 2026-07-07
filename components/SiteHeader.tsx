@@ -1,11 +1,11 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import styles from "./SiteHeader.module.css";
-import { Wordmark } from "./Wordmark";
 
 /**
- * Fixed page chrome over the cream hero: wordmark left, pledge CTA right.
+ * Fixed page chrome over the cream hero: logo left, pledge CTA right.
  * Desktop and mobile share the same minimal header — section links are not
  * surfaced from the chrome; the page is a single scroll narrative.
  */
@@ -29,10 +29,15 @@ export function SiteHeader() {
         className={styles.brand}
         aria-label="Waqf Collective, home"
       >
-        <Wordmark className={styles.mark} />
-        <span className={styles.brandText}>
-          <span>Waqf</span>
-          <span>Collective</span>
+        <span className={styles.logoMark}>
+          <Image
+            src="/logos/main_logo.png"
+            alt="Waqf Collective"
+            fill
+            className={styles.logo}
+            priority
+            sizes="(min-width: 900px) 110px, 90px"
+          />
         </span>
       </a>
 

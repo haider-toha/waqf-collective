@@ -3,7 +3,6 @@
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { useScrollProgress, smoothstep } from "@/lib/useScrollProgress";
-import { VERSE_ARABIC, VERSE_REFERENCE, VERSE_TRANSLATION } from "@/lib/verse";
 import styles from "./Grantmaking.module.css";
 
 /**
@@ -30,7 +29,7 @@ const CATEGORIES = [
 // overlap so one plant is settling as the next begins. Because the mask windows
 // also overlap in the troughs (mask-composite: add), the shared root system
 // stays continuous the whole way. All three finish before p=1 so the full
-// composition holds a beat before the verse resolves below.
+// composition holds a beat before the section ends.
 const REVEAL: ReadonlyArray<readonly [number, number]> = [
   [0.04, 0.32],
   [0.3, 0.6],
@@ -43,10 +42,8 @@ const REVEAL: ReadonlyArray<readonly [number, number]> = [
  * pins and scrubs, the plants reveal ONE AT A TIME: each is a soft-feathered
  * window in the image's mask whose alpha (--m1..--m3) the scroll ramps 0→1, and
  * each grant category fades/rises in with its plant. Adjacent windows overlap in
- * the troughs (mask-composite: add) so the shared roots read continuous. Below —
- * outside the pin — the full Quran 2:110 verse resolves centred, bronze Arabic
- * wiping in right-to-left. Mobile / reduced motion drop the pin (full plants +
- * roots, stacked categories); the verse is unchanged.
+ * the troughs (mask-composite: add) so the shared roots read continuous. Mobile /
+ * reduced motion drop the pin (full plants + roots, stacked categories).
  *
  * The image stays fully opaque — the reveal is the mask, never element opacity —
  * so its `darken` blend keeps clamping the webp's near-white checker onto the
@@ -57,8 +54,6 @@ export function Grantmaking() {
   const trackRef = useRef<HTMLDivElement>(null);
   const imgRef = useRef<HTMLImageElement>(null);
   const groupRefs = useRef<Array<HTMLDivElement | null>>([]);
-  const verseRef = useRef<HTMLDivElement>(null);
-  const [drawn, setDrawn] = useState(false);
   const [enabled, setEnabled] = useState(false);
 
   // Scrub only on wide viewports without reduced motion; narrow screens keep a
@@ -96,24 +91,6 @@ export function Grantmaking() {
     },
     enabled,
   );
-
-  // The verse draws itself in once scrolled into view (it sits after the pin, so
-  // it resolves as the reader scrolls past the plants). Unchanged from before.
-  useEffect(() => {
-    const el = verseRef.current;
-    if (!el) return;
-    const io = new IntersectionObserver(
-      (entries) => {
-        if (entries[0]?.isIntersecting) {
-          setDrawn(true);
-          io.disconnect();
-        }
-      },
-      { threshold: 0.4 },
-    );
-    io.observe(el);
-    return () => io.disconnect();
-  }, []);
 
   return (
     <section id="grantmaking" className={styles.section}>
@@ -157,23 +134,6 @@ export function Grantmaking() {
               </div>
             </div>
           </div>
-        </div>
-      </div>
-
-      {/* Quran 2:110 — OUTSIDE the pin so it appears after the plants: bronze
-          Arabic resolves R→L, then the translation gloss (crop order). */}
-      <div
-        ref={verseRef}
-        className={`verse verse--legacy${drawn ? " is-drawn" : ""} ${styles.verse}`}
-      >
-        <p className={`verse__arabic ${styles.arabic}`} lang="ar" dir="rtl">
-          {VERSE_ARABIC}
-        </p>
-        <div className="verse__gloss">
-          <p className={`verse__translation ${styles.translation}`}>
-            {VERSE_TRANSLATION}
-          </p>
-          <p className={`verse__meta ${styles.meta}`}>{VERSE_REFERENCE}</p>
         </div>
       </div>
     </section>

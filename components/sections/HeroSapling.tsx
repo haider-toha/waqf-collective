@@ -5,11 +5,12 @@ import { useEffect, useRef } from "react";
 import styles from "./Hero.module.css";
 
 const SRC = "/opt/image-1.webp";
-// Sampled from image-1.webp's own top-left pixel so the canvas ground the
-// tiles rest on is byte-identical to the WebP's field — no visible seam
-// between the CSS ground, the raw <img> before the canvas paints, and the
-// canvas itself. Must stay in sync with --cream in globals.css.
-const CREAM = "#fceacc";
+// The softened cream. image-1.webp's field was recoloured to this exact value,
+// so the canvas ground the tiles rest on is byte-identical to the WebP's field
+// — no visible seam between the CSS ground, the raw <img> before the canvas
+// paints, and the canvas itself. Keep in sync with --cream (globals.css) and
+// themeColor (layout.tsx).
+const CREAM = "#f7f1e6";
 
 /**
  * The sapling as a living pixel grid. The source mosaic is sampled into a dense
@@ -91,7 +92,7 @@ export function HeroSapling() {
       canvas.style.width = `${cssW}px`;
       canvas.style.height = `${cssH}px`;
 
-      const FOCAL_Y = cssW <= 900 ? 0 : 0.35;
+      const FOCAL_Y = cssW <= 900 ? 0 : 0.5;
 
       // dense grid — ~8–11px tiles, so the sapling keeps its detail. The source
       // caps out around 260 columns of real detail, so we stay under that.

@@ -12,29 +12,30 @@
   color: var(--ink);
 }
 
-/* --- wordmark ------------------------------------------------------------ */
+/* --- logo ---------------------------------------------------------------- */
 .brand {
   display: inline-flex;
   align-items: center;
-  gap: 0.6rem;
   text-decoration: none;
   color: inherit;
-}
-.mark {
-  width: 1.85rem;
-  height: 1.85rem;
-  color: var(--bronze);
   flex: none;
 }
-.brandText {
-  display: flex;
-  flex-direction: column;
-  font-family: var(--font-sans);
-  font-weight: 500;
-  font-size: 0.72rem;
-  line-height: 1.16;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
+/* The source PNG is mostly padding around the mark; crop it with a tight box
+   and scale the art up so the wordmark reads at header size. */
+.logoMark {
+  position: relative;
+  display: block;
+  flex: none;
+  width: clamp(4.75rem, 8vw, 6.5rem);
+  height: clamp(3.25rem, 5.8vw, 4.25rem);
+  overflow: hidden;
+}
+.logo {
+  object-fit: contain;
+  /* Bias upward — the leaf on the infinity mark sits high in the source PNG. */
+  object-position: center 32%;
+  transform: scale(1.65);
+  transform-origin: center 38%;
 }
 
 .headerCta {
@@ -58,7 +59,7 @@
     -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
   }
-  /* Tighten the pledge CTA on small screens so the wordmark doesn't get squeezed. */
+  /* Tighten the pledge CTA on small screens so the logo doesn't get squeezed. */
   .headerCta {
     gap: 0.9rem;
     padding: 0.6rem 1rem;

@@ -57,8 +57,7 @@ const amiri = Amiri({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://waqfcollective.org"),
-  title:
-    "Waqf Collective — Plant a tree under whose shade you may never sit in",
+  title: "Waqf Collective",
   description:
     "An Islamic endowment for modern founders. Pledge a share of your equity now; at a liquidity event the proceeds fund a permanent endowment for the Muslim-led technology ecosystem.",
   openGraph: {
@@ -70,7 +69,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#FCEACC",
+  themeColor: "#F7F1E6",
   colorScheme: "light",
   viewportFit: "cover", // let content use the full notched-device viewport; pairs with the safe-area insets in globals.css
 };

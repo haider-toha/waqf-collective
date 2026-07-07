@@ -7,7 +7,7 @@
    =========================================================================== */
 :root {
   --charcoal: #0e0c0a; /* dark-section ground */
-  --cream: #fceacc; /* light-section ground — sampled from the sapling art's own field so the CSS ground and the image field are one continuous colour (was #ede1cf, which read cool against the warmer WebP and produced a visible seam at ≤900px) */
+  --cream: #f7f1e6; /* light-section ground — a soft warm off-white. Softened from the old harsher #fceacc (too yellow); the sapling art's own field (public/opt/image-1.webp) was recoloured to this exact value so the CSS ground and the image field stay one continuous colour with no seam at ≤900px. Keep in sync with CREAM in HeroSapling.tsx and themeColor in layout.tsx. */
   --bone: #ece6d8; /* text on charcoal */
   --ink: #1a1710; /* text on cream */
   --olive: #565b43; /* hairlines, structural marks */

@@ -22,16 +22,16 @@ import styles from "./PledgeWorks.module.css";
 
 const STAGES = [
   {
+    title: "The Endowment",
+    body: "Join the perpetual endowment, governed in accordance with Islamic principles.",
+  },
+  {
     title: "The Pledge",
-    body: "You pledge equity now or as a future commitment.",
+    body: "Pledge a share of your equity now, or make a cash contribution.",
   },
   {
     title: "The Realisation",
     body: "At a liquidity event, the proceeds of the pledged equity are transferred to the Collective Waqf.",
-  },
-  {
-    title: "The Endowment",
-    body: "A perpetual endowment is created and governed in accordance with Islamic principles.",
   },
   {
     title: "Grantmaking",

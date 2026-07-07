@@ -1,5 +1,6 @@
 import { PledgeCTA } from "@/components/PledgeCTA";
 import { HeroSapling } from "./HeroSapling";
+import { HeroVerse } from "./HeroVerse";
 import styles from "./Hero.module.css";
 
 /**
@@ -14,6 +15,9 @@ export function Hero() {
     <section id="hero" className={styles.hero}>
       {/* sapling — pixelated mosaic at rest, crisp under the pointer spotlight */}
       <HeroSapling />
+
+      {/* verse — right-side anchor beside the sapling crown */}
+      <HeroVerse />
 
       {/* left column — promise + pledge */}
       <div className={styles.content}>

@@ -8,9 +8,8 @@
    shared roots never break. `darken` on the image clamps the webp's near-white
    checker onto the cream (painted on the pin, since `position: sticky` isolates
    the blend); the image stays fully opaque so that blend is never isolated. Each
-   grant category rises in with its plant. Below — outside the pin — the full
-   Quran 2:110 verse resolves centred, its bronze Arabic wiping in right-to-left.
-   Plant centres 0.205 / 0.492 / 0.776; shared-root band y 0.457→0.87 (no bottom
+   grant category rises in with its plant. Plant centres 0.205 / 0.492 / 0.776;
+   shared-root band y 0.457→0.87 (no bottom
    fade — the roots are the feature).
    =========================================================================== */
 .section {
@@ -188,31 +187,11 @@
   color: var(--ink-dim);
 }
 
-/* --- the verse, centred, below the pin ------------------------------------ */
-.verse {
-  max-width: 46rem;
-  margin: 0 auto;
-  padding-block: clamp(3vh, 7vh, 9vh) clamp(9vh, 15vh, 18vh);
-  padding-inline: var(--edge);
-  text-align: center;
-}
-.arabic {
-  margin: 0 0 0.55rem;
-}
-.translation {
-  margin: 0 auto;
-  max-width: 36ch;
-  font-size: clamp(1.05rem, 1.15vw, 1.15rem);
-}
-.meta {
-  margin: 0.75rem 0 0;
-}
-
 /* ===========================================================================
    Narrow (≤1080px — matches the min-width:1081px scrub gate; wider than
    PledgeWorks because the categories are absolutely positioned over the plants).
    No pin (reflow-safe): the full plants + roots show (mask off), the three
-   categories stack one per row, then the centred verse.
+   categories stack one per row.
    =========================================================================== */
 @media (max-width: 1080px) {
   .scrubTrack {
@@ -262,10 +241,6 @@
   .groupBody {
     max-width: 28ch;
     margin-inline: auto;
-  }
-
-  .verse {
-    max-width: 34rem;
   }
 }
 

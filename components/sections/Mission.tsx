@@ -19,11 +19,21 @@ export function Mission() {
   return (
     <section id="mission" className={styles.section}>
       <div className={styles.textCol}>
-        <p className={styles.quote} data-reveal>
-          An institution dedicated to translating the success of modern founders
-          into generation-spanning impact through the Islamic endowment
-          tradition.
-        </p>
+        <div className={styles.lead}>
+          <p className={styles.quote} data-reveal>
+            An institution dedicated to translating the success of modern
+            founders into generation-spanning impact through the Islamic
+            endowment tradition.
+          </p>
+          <p
+            className={styles.context}
+            data-reveal
+            style={{ transitionDelay: "80ms" }}
+          >
+            Historically, waqfs were funded with land and real estate. Today,
+            the most significant wealth is created in the technology sector.
+          </p>
+        </div>
 
         <div className={styles.ctaRow}>
           <PledgeCTA href="#close">Read the Manifesto</PledgeCTA>

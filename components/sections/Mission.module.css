@@ -24,6 +24,22 @@
     clamp(3rem, 7vh, 5rem) var(--edge);
 }
 
+.lead {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: clamp(1.1rem, 2.2vh, 1.6rem);
+}
+
+.context {
+  margin: 0;
+  max-width: 32ch;
+  font-family: var(--font-sans);
+  font-size: clamp(0.95rem, 1.05vw, 1.08rem);
+  line-height: 1.55;
+  color: var(--bone-dim);
+}
+
 .quote {
   margin: 0;
   max-width: 19ch;
@@ -85,7 +101,7 @@
 }
 
 /* Gradients that dissolve the arch into the charcoal background —
-   left edge fades across ~45% of the column, top edge fades ~30%. */
+   left edge fades across ~65% of the column, top + bottom edges fade vertically. */
 .media::before,
 .media::after {
   content: "";
@@ -99,8 +115,15 @@
   background: linear-gradient(to right, var(--charcoal) 0%, transparent 65%);
 }
 .media::after {
-  /* top → transparent */
-  background: linear-gradient(to bottom, var(--charcoal) 0%, transparent 50%);
+  /* top → transparent → charcoal at bottom (melts into the next section) */
+  background: linear-gradient(
+    to bottom,
+    var(--charcoal) 0%,
+    transparent 30%,
+    transparent 52%,
+    color-mix(in oklab, var(--charcoal) 40%, transparent) 72%,
+    var(--charcoal) 92%
+  );
 }
 
 /* ===========================================================================
@@ -129,9 +152,10 @@
     background: linear-gradient(
       to bottom,
       var(--charcoal) 0%,
-      transparent 28%,
-      transparent 62%,
-      var(--charcoal) 100%
+      transparent 22%,
+      transparent 50%,
+      color-mix(in oklab, var(--charcoal) 40%, transparent) 72%,
+      var(--charcoal) 92%
     );
   }
 
