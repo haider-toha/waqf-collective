@@ -5,7 +5,11 @@ import { useEffect, useRef } from "react";
 import styles from "./Hero.module.css";
 
 const SRC = "/opt/image-1.webp";
-const CREAM = "#ede1cf"; // the hero ground; the field the tiles rest on
+// Sampled from image-1.webp's own top-left pixel so the canvas ground the
+// tiles rest on is byte-identical to the WebP's field — no visible seam
+// between the CSS ground, the raw <img> before the canvas paints, and the
+// canvas itself. Must stay in sync with --cream in globals.css.
+const CREAM = "#fceacc";
 
 /**
  * The sapling as a living pixel grid. The source mosaic is sampled into a dense
@@ -42,7 +46,12 @@ export function HeroSapling() {
 
     const DPR = Math.min(window.devicePixelRatio || 1, 2);
     const FOCAL_X = 0.5;
-    const FOCAL_Y = 0.35; // mirrors object-position: center 35%
+    // Vertical crop origin, mirroring the CSS `object-position` on .img so the
+    // <img> LCP and the canvas paint sit exactly on top of one another. The
+    // sapling's top pixel is only ~2% down the source, so under 900px (where
+    // portrait viewports force a vertical crop) we top-align to keep the leaf
+    // tip intact and let the mound bleed off the bottom. Kept in sync with the
+    // ≤900px override for .img in Hero.module.css.
     const FRICTION = 0.86;
     const SPRING = 0.08;
 
@@ -81,6 +90,8 @@ export function HeroSapling() {
       canvas.height = Math.round(cssH * DPR);
       canvas.style.width = `${cssW}px`;
       canvas.style.height = `${cssH}px`;
+
+      const FOCAL_Y = cssW <= 900 ? 0 : 0.35;
 
       // dense grid — ~8–11px tiles, so the sapling keeps its detail. The source
       // caps out around 260 columns of real detail, so we stay under that.

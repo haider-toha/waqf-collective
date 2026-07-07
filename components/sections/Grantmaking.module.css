@@ -1,26 +1,52 @@
 /* ===========================================================================
    Grantmaking — cream ground, ink text.
-   A centred headline crowns three botanicals sharing one root system (image-3);
-   each grant category is set to its plant's upper-right. Below, the
-   full Quran 2:110 verse resolves centred, its
-   bronze Arabic wiping in right-to-left, tucked into the fading roots above.
+   A centred headline crowns three botanicals sharing one root system (image-3).
+   The section is a tall scrub track; a sticky pin holds the frame while the
+   three plants reveal ONE AT A TIME — each a soft-feathered window in the image's
+   mask whose alpha (--m1..--m3) the scroll ramps 0→1. Adjacent windows overlap in
+   the troughs (0.352 / 0.693) and `mask-composite: add` unions them, so the
+   shared roots never break. `darken` on the image clamps the webp's near-white
+   checker onto the cream (painted on the pin, since `position: sticky` isolates
+   the blend); the image stays fully opaque so that blend is never isolated. Each
+   grant category rises in with its plant. Below — outside the pin — the full
+   Quran 2:110 verse resolves centred, its bronze Arabic wiping in right-to-left.
+   Plant centres 0.205 / 0.492 / 0.776; shared-root band y 0.457→0.87 (no bottom
+   fade — the roots are the feature).
    =========================================================================== */
 .section {
   position: relative;
   min-height: 100svh;
   background: var(--cream);
   color: var(--ink);
-  padding-block: 12vh;
-  padding-inline: var(--edge);
 }
 
-.inner {
-  max-width: 1280px;
-  margin-inline: auto;
+/* Outer wrapper = the scrub track. Its height beyond one viewport is the scroll
+   the pin consumes revealing all three plants. */
+.scrubTrack {
+  position: relative;
+  height: 230vh;
+}
+
+/* The pinned frame — everything the viewer sees while the section scrubs.
+   `position: sticky` makes this an isolated stacking group, so the image's
+   `darken` must blend against a cream painted INSIDE the group — hence the
+   background lives here, not only on the section. */
+.pin {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  background: var(--cream);
+  display: flex;
+  flex-direction: column;
+  padding-block: clamp(5vh, 8vh, 10vh) 4vh;
+  padding-inline: var(--edge);
+  overflow: clip;
 }
 
 /* --- headline ------------------------------------------------------------- */
 .headline {
+  position: relative;
+  z-index: 2;
   margin: 0 auto;
   max-width: 40ch;
   text-align: center;
@@ -31,28 +57,94 @@
 }
 
 /* --- the botanical plot + overlaid categories ----------------------------- */
+/* Fills the pin below the headline and centres the plot vertically, so the plants
+   always sit in the middle of the frame regardless of viewport height. */
+.sequence {
+  flex: 1 1 auto;
+  min-height: 0;
+  margin-top: clamp(1rem, 3vh, 2.5rem);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Cap the width by viewport height too, so the ~1.79:1 image always fits the pin
+   under the headline. */
 .plot {
   position: relative;
   width: 100%;
-  max-width: 1100px;
-  margin: clamp(2.25rem, 5vw, 4.5rem) auto 0;
+  max-width: min(1100px, 120vh);
+  margin-inline: auto;
 }
 
-/* The supplied image-3.png is opaque RGB with a light neutral checkerboard baked
-   into its "transparent" background (no alpha channel). `darken` keeps the
-   darker of image vs. cream per pixel: the near-white neutral checker (>= cream)
-   clamps exactly to the cream ground and disappears, while the darker, warmer
-   botanical linework/roots survive. A hair of brightness lifts the few checker
-   squares that sit just below cream up over it so they clamp away too. */
+/* The supplied image-3 is opaque RGB with a light neutral checkerboard baked into
+   its "transparent" background (no alpha channel). `darken` keeps the darker of
+   image vs. cream per pixel: the near-white checker (>= cream) clamps to the cream
+   ground and disappears, while the darker, warmer botanical linework/roots survive.
+   A hair of brightness lifts the few checker squares just below cream up over it
+   so they clamp away too. The image is masked into three feathered plant-windows;
+   each window's alpha is a custom prop the scrub ramps 0→1. Feathered flanks
+   overlap in the troughs so, unioned by `mask-composite: add`, the shared roots
+   read continuous. Never animate opacity here — that would isolate the layer and
+   kill the blend; the reveal is the mask alone. */
 .image {
   display: block;
   width: 100%;
   height: auto;
   filter: brightness(1.05);
   mix-blend-mode: darken;
+  --m1: 0;
+  --m2: 0;
+  --m3: 0;
+  -webkit-mask-image:
+    linear-gradient(
+      to right,
+      transparent 0%,
+      rgba(0, 0, 0, var(--m1)) 5%,
+      rgba(0, 0, 0, var(--m1)) 40%,
+      transparent 44%
+    ),
+    linear-gradient(
+      to right,
+      transparent 30%,
+      rgba(0, 0, 0, var(--m2)) 40%,
+      rgba(0, 0, 0, var(--m2)) 70%,
+      transparent 73%
+    ),
+    linear-gradient(
+      to right,
+      transparent 61%,
+      rgba(0, 0, 0, var(--m3)) 72%,
+      rgba(0, 0, 0, var(--m3)) 100%
+    );
+  -webkit-mask-composite: source-over;
+  mask-image:
+    linear-gradient(
+      to right,
+      transparent 0%,
+      rgba(0, 0, 0, var(--m1)) 5%,
+      rgba(0, 0, 0, var(--m1)) 40%,
+      transparent 44%
+    ),
+    linear-gradient(
+      to right,
+      transparent 30%,
+      rgba(0, 0, 0, var(--m2)) 40%,
+      rgba(0, 0, 0, var(--m2)) 70%,
+      transparent 73%
+    ),
+    linear-gradient(
+      to right,
+      transparent 61%,
+      rgba(0, 0, 0, var(--m3)) 72%,
+      rgba(0, 0, 0, var(--m3)) 100%
+    );
+  mask-composite: add;
+  will-change: mask-image;
 }
 
-/* on desktop the three groups float over the image, upper-right of each plant */
+/* on desktop the three groups float over the image, upper-right of each plant.
+   Scrub drives each group's opacity/translate in step with its plant. */
 .overlay {
   position: absolute;
   inset: 0;
@@ -60,7 +152,9 @@
 
 .group {
   position: absolute;
-  width: 12rem;
+  width: clamp(8.5rem, 14%, 11rem);
+  opacity: 0;
+  will-change: opacity, transform;
 }
 .group:nth-child(1) {
   top: 15.5%;
@@ -68,11 +162,11 @@
 }
 .group:nth-child(2) {
   top: 15.5%;
-  left: 55.5%;
+  left: 55%;
 }
 .group:nth-child(3) {
   top: 15.5%;
-  left: 82%;
+  left: 84%;
 }
 
 .groupName {
@@ -87,21 +181,19 @@
 
 .groupBody {
   margin: 0.6rem 0 0;
-  max-width: 20ch;
+  max-width: 17ch;
   font-family: var(--font-sans);
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   line-height: 1.42;
   color: var(--ink-dim);
 }
 
-/* --- the verse, centred, tucked up into the fading roots ------------------ */
+/* --- the verse, centred, below the pin ------------------------------------ */
 .verse {
   max-width: 46rem;
-  /* pull the block up so the Arabic nestles into the fading lower roots, as in
-     the reference. The image is fixed at ~615px tall across desktop, so a fixed
-     rise (not vw) keeps the Arabic over the faint root tips, clear of the dense
-     centre. Overridden to positive spacing on mobile below. */
-  margin: -5.25rem auto 0;
+  margin: 0 auto;
+  padding-block: clamp(3vh, 7vh, 9vh) clamp(9vh, 15vh, 18vh);
+  padding-inline: var(--edge);
   text-align: center;
 }
 .arabic {
@@ -109,18 +201,34 @@
 }
 .translation {
   margin: 0 auto;
-  max-width: 34ch;
-  font-size: 1.02rem;
+  max-width: 36ch;
+  font-size: clamp(1.05rem, 1.15vw, 1.15rem);
+}
+.meta {
+  margin: 0.75rem 0 0;
 }
 
 /* ===========================================================================
-   Mobile / narrow — image stays full-width (it is one combined illustration),
-   then the three categories stack one per row, then the centred verse.
+   Narrow (≤1080px — matches the min-width:1081px scrub gate; wider than
+   PledgeWorks because the categories are absolutely positioned over the plants).
+   No pin (reflow-safe): the full plants + roots show (mask off), the three
+   categories stack one per row, then the centred verse.
    =========================================================================== */
 @media (max-width: 1080px) {
+  .scrubTrack {
+    height: auto;
+  }
+  .pin {
+    position: static;
+    height: auto;
+    padding-block: 12vh;
+    overflow: visible;
+  }
+  .sequence {
+    margin-top: clamp(1.75rem, 5vw, 3rem);
+  }
   .plot {
     max-width: 620px;
-    margin-top: clamp(1.75rem, 5vw, 3rem);
   }
 
   .headlineBreak {
@@ -128,6 +236,11 @@
   }
   .headline {
     max-width: 20ch;
+  }
+
+  .image {
+    -webkit-mask-image: none;
+    mask-image: none;
   }
 
   /* groups drop out of the overlay and into normal flow, stacked + centred */
@@ -143,6 +256,8 @@
     position: static;
     width: min(100%, 22rem);
     text-align: center;
+    opacity: 1 !important;
+    transform: none !important;
   }
   .groupBody {
     max-width: 28ch;
@@ -151,6 +266,29 @@
 
   .verse {
     max-width: 34rem;
-    margin-top: clamp(2.5rem, 9vw, 3.75rem);
+  }
+}
+
+/* ===========================================================================
+   Reduced motion — no pin, no scrub; the whole illustration + categories rest
+   visible. The categories keep their desktop overlay positions at wide widths;
+   the ≤768px block stacks them on phones.
+   =========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  .scrubTrack {
+    height: auto;
+  }
+  .pin {
+    position: static;
+    height: auto;
+    padding-block: 12vh;
+  }
+  .image {
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+  .group {
+    opacity: 1 !important;
+    transform: none !important;
   }
 }

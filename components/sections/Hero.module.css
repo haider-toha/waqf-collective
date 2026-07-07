@@ -147,7 +147,12 @@
     margin-inline: calc(-1 * var(--edge));
     margin-top: clamp(1.25rem, 4vh, 2.25rem);
   }
+  /* The sapling's topmost pixel is only 14/608 (~2%) from the top of the
+     source. Anything above `center top` here clips the leaf tip on portrait
+     viewports where cover has to crop vertically. Top-align the framing and
+     let the mound bleed off the bottom — that's the composition Hero.tsx
+     describes. Keep this in sync with FOCAL_Y in HeroSapling.tsx. */
   .img {
-    object-position: center 32%;
+    object-position: center top;
   }
 }

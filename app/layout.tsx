@@ -70,7 +70,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#EDE1CF",
+  themeColor: "#FCEACC",
   colorScheme: "light",
   viewportFit: "cover", // let content use the full notched-device viewport; pairs with the safe-area insets in globals.css
 };

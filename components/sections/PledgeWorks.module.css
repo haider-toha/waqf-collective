@@ -1,17 +1,38 @@
 /* ===========================================================================
    How the pledge works — charcoal ground, bone text.
-   Full-width golden growth line (image-2); four labels aligned under the first
-   four stages; the fifth (the grown tree) is visual only.
+   One golden growth line (image-2). Its five stages are five soft-feathered
+   windows in the image's mask; scroll ramps each window's alpha (--m1..--m5) so
+   the stages materialise in turn (seed → full tree). Adjacent windows overlap in
+   the troughs and `mask-composite: add` unions them, so the connecting line never
+   breaks. `lighten` on the figure drops the webp's black ground onto the charcoal;
+   the image stays fully opaque so that blend is never isolated. Four labels rise
+   in beneath their stems.
+   Stage geometry (edges/centres/troughs) measured from image-2.
    =========================================================================== */
+
+/* Outer wrapper = the scrub track. Its height beyond one viewport is the scroll
+   the pin consumes revealing all five stages. */
 .section {
   position: relative;
-  min-height: 100svh;
+  height: 260vh;
   background: var(--charcoal);
   color: var(--bone);
-  padding-block: 12vh;
-  padding-inline: var(--edge);
+}
+
+/* The pinned frame — everything the viewer sees while the section scrubs.
+   `position: sticky` makes this an isolated stacking group, so the growth line's
+   `lighten` must blend against a charcoal painted INSIDE the group — hence the
+   background lives here, not only on the section. */
+.pin {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  background: var(--charcoal);
   display: flex;
   flex-direction: column;
+  padding-block: clamp(6vh, 10vh, 12vh) 8vh;
+  padding-inline: var(--edge);
+  overflow: clip;
 }
 
 /* --- intro ---------------------------------------------------------------- */
@@ -28,42 +49,138 @@
   letter-spacing: -0.012em;
 }
 
-/* --- the endowment line --------------------------------------------------- */
+/* --- the growth line ------------------------------------------------------ */
 .sequence {
+  flex: 1 1 auto;
+  min-height: 0;
   margin-top: clamp(2rem, 5vh, 4rem);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
+/* Cap the width so the band's height always fits the pin. */
 .inner {
   position: relative;
   width: 100%;
+  max-width: min(1200px, 116vh);
+  margin-inline: auto;
 }
+
+/* `lighten` here (not on the masked child) blends the whole line onto charcoal
+   once; the child stays fully opaque so the blend is never isolated. */
 .figure {
+  position: relative;
   width: 100%;
   mix-blend-mode: lighten;
 }
+
+/* Static bottom fade: the lower roots dissolve into the charcoal so the labels,
+   pulled up beneath the stems, sit on clean ground. Compounds with the window
+   mask on the image below it. */
+.figureFade {
+  -webkit-mask-image: linear-gradient(to bottom, #000 35%, transparent 58%);
+  mask-image: linear-gradient(to bottom, #000 35%, transparent 58%);
+}
+
+/* The one image, masked into five feathered stage-windows. Each window's alpha
+   is a custom prop the scrub ramps 0→1; transparent flanks feather the edges,
+   and the cores reach into the troughs (0.155 / 0.296 / 0.451 / 0.602) so
+   neighbouring windows overlap there and the line stays whole. */
 .figureImg {
   display: block;
   width: 100%;
   height: auto;
-  /* Mask-wipe: hidden from the right, revealed left→right on scroll-in. */
-  clip-path: inset(0 100% 0 0);
-  transition: clip-path 900ms var(--ease-out);
-  will-change: clip-path;
-  /* Fade the bottom of the growth line into charcoal so labels sit cleanly. */
-  -webkit-mask-image: linear-gradient(to bottom, #000 35%, transparent 58%);
-  mask-image: linear-gradient(to bottom, #000 35%, transparent 58%);
-}
-.section[data-shown="true"] .figureImg {
-  clip-path: inset(0 0 0 0);
+  --m1: 0;
+  --m2: 0;
+  --m3: 0;
+  --m4: 0;
+  --m5: 0;
+  -webkit-mask-image:
+    linear-gradient(
+      to right,
+      transparent 0%,
+      rgba(0, 0, 0, var(--m1)) 3%,
+      rgba(0, 0, 0, var(--m1)) 15.5%,
+      transparent 20.5%
+    ),
+    linear-gradient(
+      to right,
+      transparent 12.5%,
+      rgba(0, 0, 0, var(--m2)) 18.5%,
+      rgba(0, 0, 0, var(--m2)) 29.6%,
+      transparent 34.5%
+    ),
+    linear-gradient(
+      to right,
+      transparent 26.5%,
+      rgba(0, 0, 0, var(--m3)) 33.5%,
+      rgba(0, 0, 0, var(--m3)) 45.1%,
+      transparent 50%
+    ),
+    linear-gradient(
+      to right,
+      transparent 42%,
+      rgba(0, 0, 0, var(--m4)) 50%,
+      rgba(0, 0, 0, var(--m4)) 60.2%,
+      transparent 66%
+    ),
+    linear-gradient(
+      to right,
+      transparent 56%,
+      rgba(0, 0, 0, var(--m5)) 66%,
+      rgba(0, 0, 0, var(--m5)) 99.5%,
+      transparent 100%
+    );
+  -webkit-mask-composite: source-over;
+  mask-image:
+    linear-gradient(
+      to right,
+      transparent 0%,
+      rgba(0, 0, 0, var(--m1)) 3%,
+      rgba(0, 0, 0, var(--m1)) 15.5%,
+      transparent 20.5%
+    ),
+    linear-gradient(
+      to right,
+      transparent 12.5%,
+      rgba(0, 0, 0, var(--m2)) 18.5%,
+      rgba(0, 0, 0, var(--m2)) 29.6%,
+      transparent 34.5%
+    ),
+    linear-gradient(
+      to right,
+      transparent 26.5%,
+      rgba(0, 0, 0, var(--m3)) 33.5%,
+      rgba(0, 0, 0, var(--m3)) 45.1%,
+      transparent 50%
+    ),
+    linear-gradient(
+      to right,
+      transparent 42%,
+      rgba(0, 0, 0, var(--m4)) 50%,
+      rgba(0, 0, 0, var(--m4)) 60.2%,
+      transparent 66%
+    ),
+    linear-gradient(
+      to right,
+      transparent 56%,
+      rgba(0, 0, 0, var(--m5)) 66%,
+      rgba(0, 0, 0, var(--m5)) 99.5%,
+      transparent 100%
+    );
+  mask-composite: add;
+  will-change: mask-image;
 }
 
-/* Four columns pulled up under the vine, aligned beneath stages 1–4.
-   Column pitch (~16.3%) tracks the stage spacing measured in image-2; the
-   fifth track (1fr) is the empty gutter beneath the grown tree. */
+/* Four labels under stages 1–4 (16.3% column pitch tracks the stage spacing in
+   image-2); the fifth (grown tree) is the empty gutter. The −21.5% pull (of the
+   band's own width) lifts them under their stems. JS scrub drives each col's
+   opacity/translate in step with its stage. */
 .labels {
   position: relative;
   z-index: 2;
   list-style: none;
-  margin: calc(-0.215 * (100vw - 2 * var(--edge))) 0 0;
+  margin: -21.5% 0 0;
   padding: 0;
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 16.3%)) minmax(0, 1fr);
@@ -72,34 +189,12 @@
 }
 .col {
   max-width: 22ch;
-  /* cascade in behind the wipe (left→right via staggered delay) */
   opacity: 0;
-  transform: translateY(14px);
-  transition:
-    opacity 700ms var(--ease-out),
-    transform 700ms var(--ease-out);
   will-change: opacity, transform;
 }
-.col:nth-child(1) {
-  transition-delay: 0ms;
-}
-.col:nth-child(2) {
-  transition-delay: 80ms;
-}
-.col:nth-child(3) {
-  transition-delay: 160ms;
-}
-.col:nth-child(4) {
-  transition-delay: 240ms;
-}
 .col:nth-child(5) {
-  transition-delay: 320ms;
   justify-self: center;
   text-align: center;
-}
-.section[data-shown="true"] .col {
-  opacity: 1;
-  transform: none;
 }
 .colTitle {
   margin: 0;
@@ -120,28 +215,31 @@
 }
 
 /* ===========================================================================
-   Mobile — a cue-less horizontal scroller hid stages 2–5 (and failed WCAG
-   reflow). Instead the sequence stacks vertically: the growth line reads
-   full-width up top, then the four stages fall into a single readable column.
+   Mobile — no pin (reflow-safe). The full line shows (mask off), then the four
+   stages fall into one readable column.
    =========================================================================== */
 @media (max-width: 768px) {
   .section {
-    min-height: auto; /* no viewport-height void on phones */
+    height: auto;
   }
-  .sequence {
+  .pin {
+    position: static;
+    height: auto;
+    padding-block: 12vh;
     overflow: visible;
-    margin-inline: 0;
-    padding-inline: 0;
   }
   .inner {
-    min-width: 0;
+    max-width: none;
   }
   .figure {
     max-width: 26rem;
     margin-inline: auto;
   }
+  .figureFade {
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
   .figureImg {
-    /* labels no longer overlap the vine, so show the full growth line */
     -webkit-mask-image: none;
     mask-image: none;
   }
@@ -153,6 +251,8 @@
   }
   .col {
     max-width: 40ch;
+    opacity: 1 !important;
+    transform: none !important;
   }
   .col:nth-child(5) {
     justify-self: start;
@@ -161,21 +261,27 @@
 }
 
 /* ===========================================================================
-   Reduced motion — fade only; no wipe, no movement.
+   Reduced motion — no pin, no scrub; the whole line and labels rest visible.
    =========================================================================== */
 @media (prefers-reduced-motion: reduce) {
-  .figureImg {
-    clip-path: none;
-    opacity: 0;
-    transition: opacity 350ms ease;
-    will-change: opacity;
+  .section {
+    height: auto;
   }
-  .section[data-shown="true"] .figureImg {
-    opacity: 1;
+  .pin {
+    position: static;
+    height: auto;
+    padding-block: 12vh;
+  }
+  .figureFade {
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+  .figureImg {
+    -webkit-mask-image: none;
+    mask-image: none;
   }
   .col {
-    transform: none;
-    transition: opacity 350ms ease;
-    transition-delay: 0ms !important;
+    opacity: 1 !important;
+    transform: none !important;
   }
 }

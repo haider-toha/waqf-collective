@@ -7,7 +7,7 @@
    =========================================================================== */
 :root {
   --charcoal: #0e0c0a; /* dark-section ground */
-  --cream: #ede1cf; /* light-section ground — the warm field the sapling art was tuned against */
+  --cream: #fceacc; /* light-section ground — sampled from the sapling art's own field so the CSS ground and the image field are one continuous colour (was #ede1cf, which read cool against the warmer WebP and produced a visible seam at ≤900px) */
   --bone: #ece6d8; /* text on charcoal */
   --ink: #1a1710; /* text on cream */
   --olive: #565b43; /* hairlines, structural marks */
@@ -268,9 +268,11 @@ button,
 }
 .verse__translation {
   font-family: var(--font-display);
-  font-style: italic;
-  color: inherit;
-  line-height: 1.32;
+  font-weight: 400;
+  font-style: normal;
+  color: color-mix(in oklab, var(--ink) 78%, transparent);
+  line-height: 1.45;
+  letter-spacing: 0.012em;
 }
 .verse__meta {
   font-family: var(--font-sans);

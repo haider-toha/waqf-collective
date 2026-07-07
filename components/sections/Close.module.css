@@ -78,13 +78,20 @@
 }
 
 /* ---------------------------------------------------------------------------
-   Mobile (≤720px) — columns stack, mountains sit full-width & subtle below.
+   Narrow (≤960px) — columns stack so the body text can wrap onto more lines
+   without colliding with the mountains. Mountains sit full-width & subtle
+   below. Raised from 720px because the side-by-side layout only has room
+   for the right-hand body column to grow taller without overlapping the
+   ink-wash on wide screens; below ~960px the two columns start to walk
+   into the mountains' vertical band.
    --------------------------------------------------------------------------- */
-@media (max-width: 720px) {
+@media (max-width: 960px) {
   .footerContent {
     /* Reserve room beneath the stacked text so it clears the mountains
        anchored to the footer's bottom edge. Mountain height ≈ width / 1.79,
-       and at 110% viewport width that's ~61vw; we pad just past that. */
+       and at 110% viewport width that's ~61vw; we pad just past that.
+       The ratio is invariant with viewport width, so the same clamp
+       clears the mountains at every width this block covers. */
     padding-top: clamp(3rem, 14vw, 4.5rem);
     padding-bottom: clamp(9rem, 62vw, 16rem);
   }
